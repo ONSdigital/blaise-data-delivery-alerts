@@ -90,10 +90,6 @@ class DDAlerts:
             self.errors, f"{self.ddm_base_url}/batch", self.concourse_build_url
         )
 
-        import json
-
-        print(json.dumps(slack_blocks))
-
         response = self.slack_webhook.send(
             text=self.backup_text(),
             blocks=slack_blocks["blocks"],

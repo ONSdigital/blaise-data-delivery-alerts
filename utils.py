@@ -98,7 +98,7 @@ def build_slack_blocks(batches, ddm_batch_url, concourse_build_url):
         )
         blocks["blocks"].append(section)
         for file in files:
-            section = slack_md_section(file_markdown(file, batch))
+            section = slack_md_section(file_markdown(file))
             attachments["blocks"].append(section)
         blocks["blocks"].append({"type": "divider"})
 
