@@ -5,7 +5,7 @@ description = ""
 authors = ["Sam Bryant <srbry@hotmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.7"
 blaise-dds = {git = "https://github.com/ONSdigital/blaise-data-delivery-status-client.git", rev = "main"}
 pytz = "^2021.1"
 termcolor = "^1.1.0"
