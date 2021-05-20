@@ -103,6 +103,11 @@ class DDAlerts:
             for file in files:
                 self.client.set_alerted(file["dd_filename"])
 
+    def exit_code(self):
+        if len(self.errors) >= 1:
+            return 1
+        return 0
+
 
 webhook_url = os.getenv("SLACK_WEBHOOK")
 ddm_base_url = os.getenv("DDM_URL")
@@ -121,3 +126,4 @@ dd_alerts.get_details()
 dd_alerts.print_report()
 dd_alerts.send_alert()
 dd_alerts.mark_alerted()
+exit(dd_alerts.exit_code())

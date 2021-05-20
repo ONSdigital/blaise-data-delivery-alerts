@@ -1,6 +1,8 @@
 import pathlib
 from datetime import datetime, timedelta
 
+BLAISE_DST_SLACK_TAG = "<!subteam^S01QV7ZHSBG>"
+
 
 def instrument_name(file_name):
     file_prefix = pathlib.Path(file_name).stem
@@ -85,7 +87,10 @@ def build_slack_blocks(batches, ddm_batch_url, concourse_build_url):
 
     header = {
         "type": "header",
-        "text": {"type": "plain_text", "text": "Data delivery error"},
+        "text": {
+            "type": "plain_text",
+            "text": f"{BLAISE_DST_SLACK_TAG} Data delivery error",
+        },
     }
     concourse_section = slack_md_section(
         f"Concourse Build URL: <{concourse_build_url}>"
