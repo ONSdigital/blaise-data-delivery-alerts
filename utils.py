@@ -93,7 +93,7 @@ def build_slack_blocks(batches, ddm_batch_url, concourse_build_url):
         },
     }
     concourse_section = slack_md_section(
-        (f"{BLAISE_DST_SLACK_TAG}\n", f"Concourse Build URL: <{concourse_build_url}>")
+        f"{BLAISE_DST_SLACK_TAG}\n" + f"Concourse Build URL: <{concourse_build_url}>"
     )
     blocks["blocks"].append(header)
     blocks["blocks"].append(concourse_section)
