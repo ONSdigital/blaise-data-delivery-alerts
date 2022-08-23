@@ -27,7 +27,7 @@ def slow_process_error(state_record):
     hours, minutes = divmod(minutes, 60)
     return (
         f"Instrument has been in state '{state_record['state']}' for {hours:d}h:{minutes:02d}m:{seconds:02d}s - {total_seconds} "
-        + f"seconds slow error configuration is {slow_seconds(state_record)} seconds"
+        + f"seconds total. Slow error configuration is {slow_seconds(state_record)} seconds"
     )
 
 
