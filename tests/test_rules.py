@@ -48,8 +48,8 @@ def test_slow_process_error():
         "updated_at": "2021-03-31T01:37:19+00:00",
     }
     assert slow_process_error(state_record) == (
-        "Instrument has been in state 'generated' for 4106 seconds "
-        + "slow error configuration is 300 seconds"
+        "Instrument has been in state 'generated' for 1h:08m:26s - 4106 seconds total. "
+        + "Slow error configuration is 300 seconds"
     )
 
 
@@ -57,7 +57,7 @@ def test_slow_process_error():
     "state,expected_timeout",
     [
         ("started", 35 * 60),
-        ("nifi_notified", 30 * 60),
+        ("nifi_notified", 120 * 60),
         ("default", 5 * 60),
         ("foobar", 5 * 60),
     ],

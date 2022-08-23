@@ -6,7 +6,7 @@ ALLOWED_AGE_PER_STATUS = {
     "default": 5 * 60,
     # LMS instruments can take a very long time to generate when the SPS is not cached
     "started": 35 * 60,
-    "nifi_notified": 30 * 60,
+    "nifi_notified": 120 * 60,
 }
 
 COMPLETE_STATES = ["inactive", "in_arc"]
@@ -23,9 +23,11 @@ def slow_process_error(state_record):
             datetime.now(pytz.UTC) - datetime.fromisoformat(state_record["updated_at"])
         ).total_seconds()
     )
+    minutes, seconds = divmod(total_seconds, 60)
+    hours, minutes = divmod(minutes, 60)
     return (
-        f"Instrument has been in state '{state_record['state']}' for {total_seconds} "
-        + f"seconds slow error configuration is {slow_seconds(state_record)} seconds"
+        f"Instrument has been in state '{state_record['state']}' for {hours:d}h:{minutes:02d}m:{seconds:02d}s - {total_seconds} "
+        + f"seconds total. Slow error configuration is {slow_seconds(state_record)} seconds"
     )
 
 
