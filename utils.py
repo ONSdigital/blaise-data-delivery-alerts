@@ -89,7 +89,7 @@ def build_slack_blocks(batches, ddm_batch_url, concourse_build_url):
         "type": "header",
         "text": {
             "type": "plain_text",
-            "text": f"Data delivery error",
+            "text": "Data delivery error",
         },
     }
     concourse_section = slack_md_section(

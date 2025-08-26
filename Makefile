@@ -1,5 +1,3 @@
-mkfile_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-
 .PHONY: show-help
 ## This help screen
 show-help:
@@ -16,7 +14,8 @@ format:
 lint:
 	@poetry run black --check .
 	@poetry run isort --check .
-	@poetry run flake8 --max-line-length=88 .
+	@poetry run flake8 --max-line-length=120 --exclude=tests .
+	@poetry run mypy .
 
 .PHONY: test
 ## Run unit tests

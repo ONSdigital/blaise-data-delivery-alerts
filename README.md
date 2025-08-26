@@ -1,21 +1,36 @@
-# Blaise data delivery status alerts
+# Blaise Data Delivery Alerts
 
-An alert processor for data delivery status.
+Queries the Data Delivery Status (DDS) API to fetch the status of all data delivery files from the last 24 hours. It then processes each file against a set of rules to identify errors or significant delays. If an issue is found, a formatted alert is sent to a configured Slack channel.
 
-At the moment this tool is configured to find any issues with data delivery based on its status in the last 24 hours.
+## Alerting Rules
 
-The rules are:
+An alert is triggered for a data delivery file if any of the following conditions are met:
 
-- Ignore any data delivery file that has already been alerted.
-- Alert for any explicit errors
-- Alert for "slow" runs - when a data delivery file has been stuck in a particular state for longer than expected.
+- **The file is in an `errored` state.** The specific error information from DDS will be included in the alert.
+- **The file processing is running slow.** A file is considered slow if it remains in a specific state for longer than the configured threshold.
 
-## Config
+The following files are **ignored** and will not trigger an alert:
+- Files that have already been alerted for.
+- Files in a complete state (`inactive`, `in_arc`).
 
-| Key                 | Description                                                       |
+### Slow Run Thresholds
+
+The time allowed for a file to be in a given state before it is considered "slow" is defined as follows:
+
+| State         | Allowed Time |
+|---------------|--------------|
+| `started`     | 35 minutes   |
+| `nifi_notified` | 120 minutes  |
+| (any other)   | 5 minutes    |
+
+## Configuration
+
+The application is configured via the following environment variables:
+
+| Variable            | Description                                                       |
 |---------------------|-------------------------------------------------------------------|
-| CONCOURSE_BUILD_URL | Used to provide a link to the concourse build in the slack alerts |
-| DDM_URL             | Used to provide a link to DDM for any batches that contain errors |
-| SLACK_WEBHOOK       | The slack webhook to send errors too                              |
-| DDS_URL             | URL of DDS to get the status information from                     |
-| CLIENT_ID           | DDS Client ID for authentication                                  |
+| `CONCOURSE_BUILD_URL` | A link to the concourse build, included in the Slack alert.       |
+| `DDM_URL`             | The base URL for the Data Delivery Manager (DDM) UI.              |
+| `SLACK_WEBHOOK`       | The Slack webhook URL to which alerts will be sent.               |
+| `DDS_URL`             | The URL of the Data Delivery Status (DDS) API.                    |
+| `CLIENT_ID`           | The Client ID for authenticating with the DDS API.                |

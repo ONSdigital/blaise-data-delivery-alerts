@@ -117,13 +117,14 @@ if None in [webhook_url, ddm_base_url, concourse_build_url]:
     print("Must provide SLACK_WEBHOOK, DDM_URL and CONCOURSE_BUILD_URL")
     exit(1)
 
+assert webhook_url is not None
 webhook = WebhookClient(webhook_url)
 
 
 client = blaise_dds.Client(blaise_dds.Config.from_env())
-dd_alerts = DDAlerts(client, webhook, concourse_build_url, ddm_base_url)
-dd_alerts.get_details()
-dd_alerts.print_report()
-dd_alerts.send_alert()
-dd_alerts.mark_alerted()
-exit(dd_alerts.exit_code())
+dd_alerts = DDAlerts(client, webhook, concourse_build_url, ddm_base_url)  # type: ignore
+dd_alerts.get_details()  # type: ignore
+dd_alerts.print_report()  # type: ignore
+dd_alerts.send_alert()  # type: ignore
+dd_alerts.mark_alerted()  # type: ignore
+exit(dd_alerts.exit_code())  # type: ignore
