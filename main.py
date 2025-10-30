@@ -56,7 +56,7 @@ class DDAlerts:
                 report += format_line(f"{batch}:", 0)
                 report += format_line(f"Date: {parse_batch_date(batch)}", 1)
                 report += format_line(f"Count: {len(files)}", 1)
-                report += format_line("Instruments:", 1)
+                report += format_line("Questionnaires:", 1)
                 for file in files:
                     report += format_state(file, 2)
         else:
@@ -70,7 +70,7 @@ class DDAlerts:
                 error_report += format_line(f"{batch}:", 0)
                 error_report += format_line(f"Date: {parse_batch_date(batch)}", 1)
                 error_report += format_line(f"Count: {len(files)}", 1)
-                error_report += format_line("Instruments:", 1)
+                error_report += format_line("Questionnaires:", 1)
                 for file in files:
                     error_report += format_state(file, 2)
         else:

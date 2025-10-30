@@ -15,6 +15,14 @@ def instrument_name(file_name):
     return "_".join(instrument_name).upper()
 
 
+def readable_timestamp(iso_str):
+    try:
+        dt = datetime.fromisoformat(iso_str)
+        return dt.strftime("%Y-%m-%d %H:%M:%S")
+    except Exception:
+        return iso_str
+
+
 def parse_batch_date(batch_name):
     try:
         batch_without_prefix = "_".join(batch_name.split("_")[1:])
@@ -52,21 +60,19 @@ def format_state(state_record, indent=0):
     return formatted_state
 
 
-def batch_markdown(batch, count, ddm_link):
+def batch_markdown(batch, ddm_link):
     return (
-        f"*Batch*: {batch}\n"
-        + f"*DDM*: {ddm_link}\n\n"
-        + f"*Date*: {parse_batch_date(batch).isoformat()}\n"
-        + f"*Error count*: {str(count)}"
+        f"*DDM*: {ddm_link}\n"
+        + f"*Date*: {parse_batch_date(batch).strftime('%Y-%m-%d %H:%M:%S')}\n"
+        + f"*Batch*: {batch}"
     )
 
 
 def file_markdown(file):
     return (
-        f"*Instrument*: {instrument_name(file['dd_filename'])}\n"
-        + f"*Batch*: {file['batch']}\n\n"
+        f"*Questionnaire*: {instrument_name(file['dd_filename'])}\n"
         + f"*State*: {file['state']}\n"
-        + f"*Last updated*: {file['updated_at']}\n"
+        + f"*Last updated*: {readable_timestamp(file['updated_at'])}\n"
         + f"*Error*: {file['error_message']}"
     )
 
@@ -89,17 +95,17 @@ def build_slack_blocks(batches, ddm_batch_url, concourse_build_url):
         "type": "header",
         "text": {
             "type": "plain_text",
-            "text": "Data delivery error",
+            "text": "🚨 Data Delivery Error",
         },
     }
     concourse_section = slack_md_section(
-        f"{BLAISE_DST_SLACK_TAG}\n" + f"Concourse Build URL: <{concourse_build_url}>"
+        f"{BLAISE_DST_SLACK_TAG}\n" + f"Concourse: <{concourse_build_url}>"
     )
     blocks["blocks"].append(header)
     blocks["blocks"].append(concourse_section)
     for batch, files in batches.items():
         section = slack_md_section(
-            batch_markdown(batch, len(files), f"{ddm_batch_url}/{batch}")
+            batch_markdown(batch, f"{ddm_batch_url}/{batch}")
         )
         blocks["blocks"].append(section)
         for file in files:
@@ -118,6 +124,6 @@ def build_slack_blocks(batches, ddm_batch_url, concourse_build_url):
             )
         )
 
-    blocks["blocks"].append(slack_md_section("*Additional Instrument Info*:"))
+    blocks["blocks"].append(slack_md_section("*Additional Information*:"))
     blocks["attachments"] = [attachments]
     return blocks

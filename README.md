@@ -17,18 +17,18 @@ The following files are **ignored** and will not trigger an alert:
 
 The time allowed for a file to be in a given state before it is considered "slow" is defined as follows:
 
-| State         | Allowed Time |
-|---------------|--------------|
-| `started`     | 35 minutes   |
+| State           | Allowed Time |
+|-----------------|--------------|
+| `started`       | 120 minutes  |
 | `nifi_notified` | 120 minutes  |
-| (any other)   | 5 minutes    |
+| (any other)     | 5 minutes    |
 
 ## Configuration
 
 The application is configured via the following environment variables:
 
-| Variable            | Description                                                       |
-|---------------------|-------------------------------------------------------------------|
+| Variable              | Description                                                       |
+|-----------------------|-------------------------------------------------------------------|
 | `CONCOURSE_BUILD_URL` | A link to the concourse build, included in the Slack alert.       |
 | `DDM_URL`             | The base URL for the Data Delivery Manager (DDM) UI.              |
 | `SLACK_WEBHOOK`       | The Slack webhook URL to which alerts will be sent.               |

@@ -48,15 +48,14 @@ def test_slow_process_error():
         "updated_at": "2021-03-31T01:37:19+00:00",
     }
     assert slow_process_error(state_record) == (
-        "Instrument has been in state 'generated' for 1h:08m:26s - 4106 seconds total. "
-        + "Slow error configuration is 300 seconds"
+        "⏳ Questionnaire has been in 'generated' state for 68 minutes..."
     )
 
 
 @pytest.mark.parametrize(
     "state,expected_timeout",
     [
-        ("started", 35 * 60),
+        ("started", 120 * 60),
         ("nifi_notified", 120 * 60),
         ("default", 5 * 60),
         ("foobar", 5 * 60),

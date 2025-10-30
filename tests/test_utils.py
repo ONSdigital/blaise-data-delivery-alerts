@@ -116,15 +116,12 @@ def test_format_state_without_error():
 
 def test_batch_markdown():
     ddm_link = "https://test_ddm_link.com"
-    error_count = 2
     batch = "OPN_30042021_023149"
     assert (
-        batch_markdown(batch, error_count, ddm_link)
-        == """*Batch*: OPN_30042021_023149
-*DDM*: https://test_ddm_link.com
-
-*Date*: 2021-04-30T02:31:49
-*Error count*: 2"""
+        batch_markdown(batch, ddm_link)
+        == """*DDM*: https://test_ddm_link.com
+*Date*: 2021-04-30 02:31:49
+*Batch*: OPN_30042021_023149"""
     )
 
 
@@ -140,11 +137,9 @@ def test_file_markdown():
                 "error_message": "Test error",
             }
         )
-        == """*Instrument*: OPN2101A
-*Batch*: OPN_31032021_023139
-
+        == """*Questionnaire*: OPN2101A
 *State*: generated
-*Last updated*: 2021-03-31T01:37:19+00:00
+*Last updated*: 2021-03-31 01:37:19
 *Error*: Test error"""
     )
 
