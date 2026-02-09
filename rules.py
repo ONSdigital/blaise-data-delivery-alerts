@@ -23,7 +23,8 @@ def slow_process_error(state_record):
         ).total_seconds()
     )
     return (
-        f"⏳ Questionnaire has been in '{state_record['state']}' state for {total_seconds // 60} minutes..."
+        f"⏳ Questionnaire has been in '{state_record['state']}' state for "
+        f"{total_seconds // 60} minutes..."
     )
 
 
