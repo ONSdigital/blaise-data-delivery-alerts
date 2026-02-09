@@ -1,0 +1,62 @@
+name: Test coverage report
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.13" ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          poetry install
+      - name: Run pytest
+        run: |
+          poetry run python -m pytest
+      - name: Test failure hints
+        if: failure()
+        run: |
+          echo "Test job failed. Common fixes:" >> $GITHUB_STEP_SUMMARY
+          echo "- Run: make test" >> $GITHUB_STEP_SUMMARY
+          echo "- Ensure dependencies are installed: poetry install" >> $GITHUB_STEP_SUMMARY
+          echo "- Check failing test output in the job logs for exact assertion" >> $GITHUB_STEP_SUMMARY
+
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.13" ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          poetry install
+      - name: Run lint
+        run: make lint
+      - name: Lint failure hints
+        if: failure()
+        run: |
+          echo "Lint job failed. Common fixes:" >> $GITHUB_STEP_SUMMARY
+          echo "- Run: poetry run black --check ." >> $GITHUB_STEP_SUMMARY
+          echo "- Run: poetry run isort --check ." >> $GITHUB_STEP_SUMMARY
+          echo "- Run: poetry run flake8 --max-line-length=88 ." >> $GITHUB_STEP_SUMMARY
+          echo "- Run: poetry run mypy ." >> $GITHUB_STEP_SUMMARY
+          echo "- Auto-fix formatting: poetry run black . && poetry run isort ." >> $GITHUB_STEP_SUMMARY
+          echo "- Check flake8/mypy output in logs for exact file and line" >> $GITHUB_STEP_SUMMARY

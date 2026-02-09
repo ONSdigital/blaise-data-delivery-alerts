@@ -104,9 +104,7 @@ def build_slack_blocks(batches, ddm_batch_url, concourse_build_url):
     blocks["blocks"].append(header)
     blocks["blocks"].append(concourse_section)
     for batch, files in batches.items():
-        section = slack_md_section(
-            batch_markdown(batch, f"{ddm_batch_url}/{batch}")
-        )
+        section = slack_md_section(batch_markdown(batch, f"{ddm_batch_url}/{batch}"))
         blocks["blocks"].append(section)
         for file in files:
             section = slack_md_section(file_markdown(file))
